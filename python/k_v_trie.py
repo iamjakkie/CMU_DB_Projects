@@ -43,3 +43,4 @@ class TrieNodeWithValue(TrieNode):
     def getValue(self):
         return self.value
 
+class Trie:
