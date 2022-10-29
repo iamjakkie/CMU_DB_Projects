@@ -27,3 +27,19 @@ class TrieNode:
     def removeChildNode(self, key_char):
         if key_char in self._children:
             del self._children[key_char]
+
+    def setEndNode(self, is_end: bool):
+        self._is_end = is_end
+
+
+class TrieNodeWithValue(TrieNode):
+    def __init__(self, val, tn: TrieNode=None, key_char:str=None):
+        if tn is None and key_char:
+            tn = super.__init__(key_char)
+        self.trieNode = tn
+        self.value = val
+        self._is_end = True
+
+    def getValue(self):
+        return self.value
+
