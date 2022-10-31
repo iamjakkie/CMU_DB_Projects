@@ -44,3 +44,13 @@ class TrieNodeWithValue(TrieNode):
         return self.value
 
 class Trie:
+    def __init__(self):
+        self._root = "\0"
+        self._latch = None
+
+    def insert(self, key:str, val):
+        if not key:
+            return False
+
+
+
