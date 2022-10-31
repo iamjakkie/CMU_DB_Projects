@@ -45,12 +45,18 @@ class TrieNodeWithValue(TrieNode):
 
 class Trie:
     def __init__(self):
-        self._root = "\0"
+        self._root = TrieNode("\0")
         self._latch = None
+        self._keys = set()
 
     def insert(self, key:str, val):
         if not key:
             return False
+        if key in self._keys:
+            return False
+        key_len = len(key)-1
+        for i, char in enumerate(key):
+            if i < key_len:
 
 
 
