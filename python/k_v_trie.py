@@ -55,8 +55,11 @@ class Trie:
         if key in self._keys:
             return False
         key_len = len(key)-1
+        prev = self._root
         for i, char in enumerate(key):
             if i < key_len:
-
+                prev.insertChildNode(char, TrieNode(char))
+            else:
+                prev.insertChildNode(char, TrieNodeWithValue(key_char=char))
 
 
