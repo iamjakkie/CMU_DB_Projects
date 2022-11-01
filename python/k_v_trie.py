@@ -8,7 +8,7 @@ class TrieNode:
         return key_char in self._children
 
     def hasChildren(self):
-        return self._children
+        return self._children.values()
 
     def isEndNode(self):
         return self._is_end
@@ -31,17 +31,24 @@ class TrieNode:
     def setEndNode(self, is_end: bool):
         self._is_end = is_end
 
+    def __repr__(self):
+        return f"TrieNode, key:{self.getKeyChar()}, children: {self.hasChildren()}"
+
 
 class TrieNodeWithValue(TrieNode):
     def __init__(self, val, tn: TrieNode = None, key_char: str = None):
         if tn is None and key_char:
-            tn = super().__init__(key_char)
+            tn = TrieNode(key_char)
         self.trieNode = tn
+        tn._is_end = True
         self.value = val
         self._is_end = True
 
     def getValue(self):
         return self.value
+
+    def __repr__(self):
+        return f"TrieNodeWithValue, key: {self.trieNode.getKeyChar()}"
 
 
 class Trie:
@@ -58,25 +65,36 @@ class Trie:
         key_len = len(key) - 1
         prev = self._root
         for i, char in enumerate(key):
+            print(char)
             if i < key_len:
                 node = TrieNode(char)
                 prev.insertChildNode(char, node)
-                last = node
                 prev = node
             else:
-                prev.insertChildNode(char, TrieNodeWithValue(tn=last, key_char=char, val=val))
+                prev.insertChildNode(char, TrieNodeWithValue(key_char=char, val=val))
 
     # def __repr__(self):
+    def depth_first_scan(self):
+        out = []
+        for node in self._root.hasChildren():
+            print(node)
+            out.append(get_node_char(node))
+        return out
+
+
+def get_node_char(tn: TrieNode):
+    if isinstance(tn, TrieNodeWithValue):
+        return tn.trieNode.getKeyChar()
+    else:
+        for i in tn.hasChildren():
+            print(i)
+            return get_node_char(i)
 
 
 def main():
     trie = Trie()
     trie.insert("test", "val")
-    print(trie._root._children)
-    node = trie._root
-    while node:
-        print(node)
-        node = node.getChildNode()
+    print(trie.depth_first_scan())
 
 
 if __name__ == '__main__':
