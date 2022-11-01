@@ -40,7 +40,7 @@ class TrieNodeWithValue(TrieNode):
         if tn is None and key_char:
             tn = TrieNode(key_char)
         self.trieNode = tn
-        tn._is_end = True
+        tn.setEndNode(True)
         self.value = val
         self._is_end = True
 
@@ -48,7 +48,7 @@ class TrieNodeWithValue(TrieNode):
         return self.value
 
     def __repr__(self):
-        return f"TrieNodeWithValue, key: {self.trieNode.getKeyChar()}"
+        return f"TrieNodeWithValue, key: {self.trieNode.getKeyChar()}, value: {self.getValue()}"
 
 
 class Trie:
@@ -65,7 +65,6 @@ class Trie:
         key_len = len(key) - 1
         prev = self._root
         for i, char in enumerate(key):
-            print(char)
             if i < key_len:
                 node = TrieNode(char)
                 prev.insertChildNode(char, node)
@@ -77,24 +76,25 @@ class Trie:
     def depth_first_scan(self):
         out = []
         for node in self._root.hasChildren():
-            print(node)
             out.append(get_node_char(node))
         return out
 
+    def __repr__(self):
+        return self._root.__repr__()
+
 
 def get_node_char(tn: TrieNode):
-    if isinstance(tn, TrieNodeWithValue):
-        return tn.trieNode.getKeyChar()
+    if tn.isEndNode() or isinstance(tn, TrieNodeWithValue):
+        return tn.getKeyChar()
     else:
-        for i in tn.hasChildren():
-            print(i)
-            return get_node_char(i)
+        return tn.getKeyChar()
 
 
 def main():
     trie = Trie()
     trie.insert("test", "val")
-    print(trie.depth_first_scan())
+    trie.insert("testosteron", "dupa")
+    print(trie)
 
 
 if __name__ == '__main__':
