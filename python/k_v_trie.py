@@ -48,7 +48,7 @@ class TrieNodeWithValue(TrieNode):
         return self.value
 
     def __repr__(self):
-        return f"TrieNodeWithValue, key: {self.trieNode.getKeyChar()}, value: {self.getValue()}"
+        return f"TrieNodeWithValue, key: {self.trieNode.getKeyChar()}, value: {self.getValue()}, children: {self.trieNode.hasChildren()}"
 
 
 class Trie:
