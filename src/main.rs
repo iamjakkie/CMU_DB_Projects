@@ -1,3 +1,8 @@
+use crate::trie::Trie;
+
+mod trie;
+
 fn main() {
-    println!("Hello, world!");
+    let mut trie = Trie::new();
+    trie
 }
