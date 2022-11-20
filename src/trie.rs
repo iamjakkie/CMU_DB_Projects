@@ -58,13 +58,28 @@ impl PartialEq<Self> for Node {
 
 pub struct Trie {
     pub root: Node,
+    pub depth: usize,
+}
+
+impl Default for Trie{
+    fn default() -> Self {
+        Self {
+            root: Node::new(),
+            depth: 0,
+        }
+    }
 }
 
 impl Trie {
+
     pub fn new() -> Self{
-        Trie { root: Node::new() }
+        Trie {
+            root: Node::new(),
+            ..Default::default()
+    }
     }
     pub fn insert(&mut self, s: &str) {
+        if self.depth < s.len() { self.depth = s.len() }
         let mut cur = &mut self.root;
         for c in s.chars() {
             match cur.children.binary_search_by(|f| f.key.cmp(&Some(c))) {
@@ -87,9 +102,60 @@ impl Trie {
             1 + node.children.iter().map(|x| self.count_entries(x)).sum::<i32>()
         }
     }
-    // fn display(&self, p: Node, side: Side, e: &Vec<DisplayElement>, f: &mut Formatter) {
+
+    pub fn print(&self, node: &Node) {
+        if *node == self.root {
+            print!("###");
+        } else {
+            println!("{}", node.key.unwrap());
+            let _ = node.children.iter().map(|x| self.print(x));
+        }
+    }
+
+    pub fn depth(&self) -> usize{
+        self.depth
+    }
+
     //
+    // pub fn bfs(&self) {
+    //     let mut q = VecDeque::new();
+    //     q.push_back()
     // }
+
+    pub fn get_level(&self, level: usize) -> Vec<Node>{
+        if level == 0 { vec![self.root]}
+        let mut cur_level: usize = 1;
+        let mut cur_level_keys = self.root.children;
+        let mut next_level_keys:Vec<Node> = Vec::new();
+        while cur_level < level {
+            next_level_keys.clear();
+            cur_level_keys.iter().map(|x| next_level_keys.append(children));
+            cur_level_keys = next_level_keys;
+            cur_level +=1;
+        }
+        cur_level_keys
+    }
+
+    // pub fn get_keys_for_level(&self, level: usize) {
+    //     let mut keys: Vec<Node> = Vec::new();
+    //     match level {
+    //         0 => { keys.append(*self.root) },
+    //         1 => {
+    //             self.root.children.iter().map(|x| keys.append(x))
+    //         },
+    //         _ => {
+    //
+    //         }
+    //     }
+    // }
+
+
+    pub fn printer(&self) -> Vec<Vec<Node>> {
+        let depth = self.depth();
+
+        let levels =
+
+    }
 }
 //
 // impl Display for Trie {
