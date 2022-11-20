@@ -28,7 +28,7 @@ impl DisplayElement {
     }
 }
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct Node {
     pub key: Option<char>,
     pub is_end: bool,
@@ -53,6 +53,22 @@ impl Node {
 impl PartialEq<Self> for Node {
     fn eq(&self, other: &Self) -> bool {
         self.key == other.key
+    }
+}
+
+// impl Clone for Node {
+//     fn clone(&self) -> Node {
+//         match self {
+//             Some(key) => Error(a.to_string()),
+//             Okay => Okay,
+//             Foo(a) => Foo(a.clone()),
+//         }
+//     }
+// }
+
+impl Display for Node {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Key: {}, Val: {}", self.key.expect("No key"), self.value.as_ref().expect("No val"))
     }
 }
 
@@ -122,15 +138,15 @@ impl Trie {
     //     q.push_back()
     // }
 
-    pub fn get_level(&self, level: usize) -> Vec<Node>{
-        if level == 0 { vec![self.root]}
+    pub fn get_level(&self, level: usize) -> &Vec<Node>{
+        if level == 0 { return &vec![self.root]; }
         let mut cur_level: usize = 1;
-        let mut cur_level_keys = self.root.children;
+        let mut cur_level_keys = &self.root.children;
         let mut next_level_keys:Vec<Node> = Vec::new();
         while cur_level < level {
             next_level_keys.clear();
-            cur_level_keys.iter().map(|x| next_level_keys.append(children));
-            cur_level_keys = next_level_keys;
+            let _ = cur_level_keys.iter_mut().map(|x| next_level_keys.append(&mut x.children));
+            cur_level_keys = &next_level_keys;
             cur_level +=1;
         }
         cur_level_keys
@@ -150,12 +166,12 @@ impl Trie {
     // }
 
 
-    pub fn printer(&self) -> Vec<Vec<Node>> {
-        let depth = self.depth();
-
-        let levels =
-
-    }
+    // pub fn printer(&self) -> Vec<Vec<Node>> {
+    //     let depth = self.depth();
+    //
+    //     let levels =
+    //
+    // }
 }
 //
 // impl Display for Trie {
